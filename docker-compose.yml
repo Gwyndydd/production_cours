@@ -1,0 +1,57 @@
+###DOCKER COMPOSE DE L'ENSEMBLE DE L'APP
+
+networks:
+  #conf par défaut
+  movies_prof :
+volumes:
+  #conf par défaut
+  movie-database:
+
+services:
+  fullstack-courses-movie-database:
+    container_name: movie-database
+    image: postgres:16.4
+    volumes:
+      - movie-database:/var/lib/postgresql/movie-database:rw
+    environment:
+      POSTGRES_DB: moviedb
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    networks:
+      - movies_prof
+    healthcheck:
+      test: pg_isready -U username -d moviedb
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  fullstack-course-movie-server:
+    container_name: movie_server
+    depends_on:
+      - fullstack-courses-movie-database
+    image: server
+    build:
+      context: backend
+      dockerfile: Dockerfile.tout
+    networks :
+      - movies_prof
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://movie-database:5432/moviedb
+      SPRING_DATASOURCE_USER: username
+      SPRING_DATASOURCE_PASSWORD: password
+
+  
+  fullstack-course-movie-frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    environment:
+      BACKEND_URL : http://localhost:8080
+    ports:
+      - 3000:80
+
+    
