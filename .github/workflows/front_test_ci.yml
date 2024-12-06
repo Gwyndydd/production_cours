@@ -40,7 +40,9 @@ jobs:
           cache-dependency-path: 'frontend/package-lock.json' # optional
       
       - run: npm ci
+        working-directory: frontend
       - run: npm run build
+        working-directory: frontend
 
        # connection au registry pour l'image & fait le logout
       - name: Login to Docker Hub
