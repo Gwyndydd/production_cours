@@ -30,14 +30,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      
+
       - name: Setup Java JDK
         uses: actions/setup-java@v4
-          with:
-            distribution: 'temurin' # See 'Supported distributions' for available options
-            java-version: '21'
-            cache: 'maven'
-            cache-dependency-path: 'backend/pom.xml' # optional
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+          cache: 'maven'
+          cache-dependency-path: 'backend/pom.xml' # optional
 
       # run maven pour lancer les tests
       # le "-B" (pour Maven) est nécessaire pour les commandes par robot pour éviter les demandes
