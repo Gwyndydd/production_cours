@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+#mmm
+#name: CI
+name: tests and build application for maven
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #Declenchement du workflow lors qu'il y a un pull resquest sur main
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+#DECLARATION DES VARIABLES D'ENVIRONNEMENT
+env:
+  DOCKERHUB_USERNAME: nologin
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+          cache: 'maven'
+          cache-dependency-path: 'backend/pom.xml' # optional
+
+      # run maven pour lancer les tests
+      # le "-B" (pour Maven) est nécessaire pour les commandes par robot pour éviter les demandes
+      # d'interaction humaine et sélectionner automatiquement yes/oui
+      - name: test with Maven
+        run: mvn -B clean test --file backend/pom.xml
+
+      - name: package with Maven
+        run: mvn -B package --file backend/pom.xml
+
+      # connection au registry pour l'image & fait le logout
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: rg.fr-par.scw.cloud/polytech2024
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_API }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend/Dockerfile
+          push: true
+          tags: rg.fr-par.scw.cloud/polytech2024/durand/back:v1
+      
