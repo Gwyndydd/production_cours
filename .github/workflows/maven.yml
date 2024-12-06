@@ -42,8 +42,8 @@ jobs:
       # run maven pour lancer les tests
       # le "-B" (pour Maven) est nécessaire pour les commandes par robot pour éviter les demandes
       # d'interaction humaine et sélectionner automatiquement yes/oui
-      - name: test with Maven
-        run: mvn -B clean test --file backend/pom.xml
+      #- name: test with Maven
+      #  run: mvn -B clean test --file backend/pom.xml
 
       - name: package with Maven
         run: mvn -B package --file backend/pom.xml
