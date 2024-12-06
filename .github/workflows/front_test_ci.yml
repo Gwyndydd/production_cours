@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 21
           cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json' # optional
       
       - run: npm ci
       - run: npm run build
