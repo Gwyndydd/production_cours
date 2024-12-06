@@ -4,7 +4,6 @@ FROM eclipse-temurin:21-jre-alpine
 #Création du repertoire dédiée
 WORKDIR /app
 
-#COPY target/backend-0.0.1-SNAPSHOT.jar .
 COPY target/backend-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
