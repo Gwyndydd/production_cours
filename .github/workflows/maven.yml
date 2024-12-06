@@ -26,6 +26,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v4
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Setup Java JDK
@@ -36,17 +39,14 @@ jobs:
             cache: 'maven'
             cache-dependency-path: 'backend/pom.xml' # optional
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-
       # run maven pour lancer les tests
       # le "-B" (pour Maven) est nécessaire pour les commandes par robot pour éviter les demandes
       # d'interaction humaine et sélectionner automatiquement yes/oui
       - name: test with Maven
-        run: mvn -B clean test --file pom.xml
+        run: mvn -B clean test --file backend/pom.xml
 
       - name: package with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file backend/pom.xml
 
       # connection au registry pour l'image & fait le logout
       - name: Login to Docker Hub
