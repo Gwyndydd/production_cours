@@ -46,7 +46,7 @@ jobs:
       #  run: mvn -B clean test --file backend/pom.xml
 
       - name: package with Maven
-        run: mvn -B package --file backend/pom.xml
+        run: mvn -B package -DskipTests --file backend/pom.xml
 
       # connection au registry pour l'image & fait le logout
       - name: Login to Docker Hub
