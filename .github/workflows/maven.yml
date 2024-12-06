@@ -59,7 +59,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: backend/
           file: backend/Dockerfile
           push: true
           tags: rg.fr-par.scw.cloud/polytech-2024/durand/back:v1
