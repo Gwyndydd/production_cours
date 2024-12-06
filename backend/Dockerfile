@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 #COPY target/backend-0.0.1-SNAPSHOT.jar .
-COPY --from=maven /app/target/backend-0.0.1-SNAPSHOT.jar .
+COPY target/backend-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
