@@ -38,8 +38,8 @@ jobs:
           node-version: 21
           cache: 'frontend/npm'
       
-      -run: npm ci
-      -run: npm run build
+      - run: npm ci
+      - run: npm run build
 
        # connection au registry pour l'image & fait le logout
       - name: Login to Docker Hub
